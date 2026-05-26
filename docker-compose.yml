@@ -1,0 +1,26 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: barakags-hr-web:latest
+    container_name: barakags_hr_web
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.barakags-web.rule=Host(`barakags.hr`)
+      - traefik.http.routers.barakags-web.entrypoints=websecure
+      - traefik.http.routers.barakags-web.tls=true
+      - traefik.http.routers.barakags-web.tls.certresolver=lehttp
+      - traefik.http.services.barakags-web.loadbalancer.server.port=3000
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
