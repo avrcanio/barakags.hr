@@ -17,6 +17,7 @@ export function SiteHeader({ locale, t }: Props) {
   const navLinks = [
     { id: "home", href: `/${locale}#home`, label: t.nav.home },
     { id: "about", href: `/${locale}#about`, label: t.nav.about },
+    { id: "gallery", href: `/${locale}#gallery`, label: t.nav.gallery },
     { id: "job", href: `/${locale}#job`, label: t.nav.job },
     { id: "apply", href: `/${locale}#apply`, label: t.nav.apply },
     { id: "contact", href: `/${locale}#contact`, label: t.nav.contact },

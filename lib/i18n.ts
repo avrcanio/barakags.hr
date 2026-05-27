@@ -6,6 +6,8 @@ export function isLocale(s: string): s is Locale {
   return locales.includes(s as Locale);
 }
 
+import type { CarouselImageId } from "@/lib/carousel";
+
 export type JobPosition = "excavator" | "fiber" | "helper";
 
 export type Messages = {
@@ -27,6 +29,7 @@ export type Messages = {
   nav: {
     home: string;
     about: string;
+    gallery: string;
     job: string;
     apply: string;
     contact: string;
@@ -42,10 +45,21 @@ export type Messages = {
     lead: string;
     p1: string;
     p2: string;
+    areas: [string, string, string];
+    specialization: string;
+    servicesHeading: string;
+    services: string[];
     imageAlts: {
       values1: string;
       values2: string;
     };
+  };
+  gallery: {
+    heading: string;
+    lead: string;
+    prev: string;
+    next: string;
+    imageAlts: Record<CarouselImageId, string>;
   };
   job: {
     heading: string;
@@ -101,7 +115,7 @@ export type Messages = {
 const hr: Messages = {
   metaTitle: "BARAKA GLOBAL SYSTEMS — Poslovi u Njemačkoj",
   metaDescription:
-    "Hrvatska agencija za zapošljavanje. Rad na projektima optičke infrastrukture u Njemačkoj — bageristi, monteri, pomoćni radnici. Osiguran smještaj.",
+    "Hrvatska tvrtka za optičku infrastrukturu. Tražimo bageriste, montere i pomoćne radnike za projekte u Njemačkoj. Osiguran smještaj.",
   ogTitle: "Posao u Njemačkoj — Baraka Global Systems",
   domain: "barakags.hr",
   company: "BARAKA GLOBAL SYSTEMS",
@@ -118,27 +132,67 @@ const hr: Messages = {
   nav: {
     home: "Početna",
     about: "O nama",
+    gallery: "Naši radovi",
     job: "Oglas",
     apply: "Prijava",
     contact: "Kontakt",
   },
   hero: {
-    title: "Vaš most do sigurnog posla i pouzdanih radnika",
+    title: "Tražimo radnike za projekte optičke infrastrukture",
     subtitle:
-      "Specijalizirana hrvatska agencija za zapošljavanje u zemlji i inozemstvu. Trenutačni fokus: stabilni poslovi u Njemačkoj.",
+      "Baraka Global Systems je hrvatska tvrtka koja izvodi radove na izgradnji i implementaciji optičke infrastrukture. Trenutačni fokus: projekti u Njemačkoj.",
     ctaApply: "Prijavi se",
     ctaLearn: "Saznaj više",
   },
   about: {
     heading: "O nama",
     lead: "Baraka Global Systems",
-    p1: "Baraka Global Systems je specijalizirana hrvatska agencija za zapošljavanje i posredovanje pri zapošljavanju u zemlji i inozemstvu. Naš cilj je jednostavan: povezati motivirane i kvalificirane radnike s provjerenim poslodavcima.",
-    p2: "Trenutačni fokus našeg poslovanja je na tržištu Njemačke, gdje u suradnji s vodećim partnerima osiguravamo stabilne poslove, konkurentne uvjete i potpunu podršku za radnike tijekom cijelog procesa integracije. Bilo da ste radnik koji traži novu priliku ili tvrtka koja treba pouzdan tim, Baraka Global Systems je vaš siguran oslonac.",
+    p1: "Baraka Global Systems je hrvatska tvrtka specijalizirana za industrijsku montažu, elektroinstalacije te građevinske i infrastrukturne radove. Radove izvodimo vlastitim timovima na terenu.",
+    p2: "Trenutačni fokus našeg poslovanja su projekti u Njemačkoj, gdje proširujemo tim i tražimo motivirane te kvalificirane radnike koji će raditi izravno s nama. Nudimo stabilan posao, konkurentne uvjete i potpunu podršku tijekom rada i integracije na projektu.",
+    areas: [
+      "Industrijska montaža",
+      "Elektro instalacije",
+      "Građevinski i infrastrukturni radovi",
+    ],
+    specialization: "Specijalizirani za EU projekte i terenske radove",
+    servicesHeading: "Izvodimo",
+    services: [
+      "Industrijsku montažu",
+      "Elektroinstalacijske radove",
+      "Polaganje optičkih i energetskih kabela",
+      "Građevinske i infrastrukturne radove",
+      "Radove na energetskim sustavima",
+      "Montažu metalnih konstrukcija",
+      "Upravljanje i organizaciju projekata",
+    ],
     imageAlts: {
       values1:
         "Sastavljanje i montaža, preciznost i kvaliteta, timski rad — Baraka Global Systems",
       values2:
         "Montaža i povezivanje, moderna tehnologija, zajedno smo jači — Baraka Global Systems",
+    },
+  },
+  gallery: {
+    heading: "Naši radovi",
+    lead: "Pogled na terenske projekte, industrijsku montažu, elektroinstalacije i infrastrukturne radove koje izvodimo u Hrvatskoj i EU.",
+    prev: "Prethodna slika",
+    next: "Sljedeća slika",
+    imageAlts: {
+      slide01: "Tim na industrijskom projektu — Baraka Global Systems",
+      slide02: "Industrijska montaža strojeva u proizvodnom pogonu",
+      slide03: "Pregled i montaža industrijskih cjevovoda",
+      slide04: "Terenski radovi na energetskom projektu",
+      slide05: "Teška montaža industrijskih konstrukcija dizalicom",
+      slide06: "Polaganje kabela bagerom s kablovodom",
+      slide07: "Elektroinstalacije — montaža industrijskih ormara",
+      slide08: "Projekt na terenu — energetska infrastruktura",
+      slide09: "Radovi na energetskom sustavu — industrijski objekt",
+      slide10: "Iskop rovova za polaganje optičkih i energetskih kabela",
+      slide11: "Polaganje energetskih kabela u rovu — Njemačka",
+      slide12: "Sanacija i popravak kolovoza",
+      slide13: "Polaganje kabela u urbanom području",
+      slide14: "Rezanje rova za optičku infrastrukturu",
+      slide15: "Građevinski radovi — asfaltiranje ceste",
     },
   },
   job: {
@@ -238,7 +292,7 @@ const hr: Messages = {
 const en: Messages = {
   metaTitle: "BARAKA GLOBAL SYSTEMS — Jobs in Germany",
   metaDescription:
-    "Croatian recruitment agency. Work on optical infrastructure projects in Germany — excavator operators, fiber installers, assistants. Accommodation provided.",
+    "Croatian optical infrastructure company hiring excavator operators, fiber installers and assistants for projects in Germany. Accommodation provided.",
   ogTitle: "Jobs in Germany — Baraka Global Systems",
   domain: "barakags.hr",
   company: "BARAKA GLOBAL SYSTEMS",
@@ -255,27 +309,67 @@ const en: Messages = {
   nav: {
     home: "Home",
     about: "About",
+    gallery: "Our work",
     job: "Vacancies",
     apply: "Apply",
     contact: "Contact",
   },
   hero: {
-    title: "Your bridge to secure jobs and reliable workers",
+    title: "We're hiring for optical infrastructure projects",
     subtitle:
-      "Specialised Croatian recruitment agency at home and abroad. Current focus: stable positions in Germany.",
+      "Baraka Global Systems is a Croatian company that carries out construction and implementation of optical infrastructure. Current focus: projects in Germany.",
     ctaApply: "Apply now",
     ctaLearn: "Learn more",
   },
   about: {
     heading: "About us",
     lead: "Baraka Global Systems",
-    p1: "Baraka Global Systems is a specialised Croatian employment and recruitment agency operating domestically and internationally. Our goal is simple: to connect motivated, qualified workers with verified employers.",
-    p2: "Our current business focus is the German market, where we work with leading partners to provide stable jobs, competitive conditions, and full support for workers throughout the integration process. Whether you are looking for a new opportunity or need a reliable team, Baraka Global Systems is your trusted partner.",
+    p1: "Baraka Global Systems is a Croatian company specialised in industrial assembly, electrical installations, and construction and infrastructure works. We perform the work with our own field teams.",
+    p2: "Our current focus is on projects in Germany, where we are expanding our team and looking for motivated, qualified workers to join us directly. We offer stable employment, competitive conditions, and full support throughout work and integration on the project.",
+    areas: [
+      "Industrial assembly",
+      "Electrical installations",
+      "Construction and infrastructure works",
+    ],
+    specialization: "Specialised in EU projects and field work",
+    servicesHeading: "What we deliver",
+    services: [
+      "Industrial assembly",
+      "Electrical installation work",
+      "Laying of optical and power cables",
+      "Construction and infrastructure works",
+      "Energy system works",
+      "Metal structure assembly",
+      "Project management and organisation",
+    ],
     imageAlts: {
       values1:
         "Assembly and mounting, precision and quality, teamwork — Baraka Global Systems",
       values2:
         "Installation and connection, modern technology, stronger together — Baraka Global Systems",
+    },
+  },
+  gallery: {
+    heading: "Our work",
+    lead: "A look at field projects, industrial assembly, electrical installations and infrastructure works we deliver in Croatia and the EU.",
+    prev: "Previous image",
+    next: "Next image",
+    imageAlts: {
+      slide01: "Team on an industrial project — Baraka Global Systems",
+      slide02: "Industrial assembly of machinery in a production hall",
+      slide03: "Inspection and assembly of industrial piping",
+      slide04: "Field work on an energy project",
+      slide05: "Heavy industrial assembly with a mobile crane",
+      slide06: "Cable laying with excavator and cable plough",
+      slide07: "Electrical installations — assembly of industrial panels",
+      slide08: "On-site project — energy infrastructure",
+      slide09: "Energy system works at an industrial facility",
+      slide10: "Trenching for optical and power cable installation",
+      slide11: "Power cable laying in a trench — Germany",
+      slide12: "Road surface repair and restoration",
+      slide13: "Cable laying in an urban area",
+      slide14: "Trench cutting for optical infrastructure",
+      slide15: "Construction works — road asphalt paving",
     },
   },
   job: {
@@ -374,7 +468,7 @@ const en: Messages = {
 const de: Messages = {
   metaTitle: "BARAKA GLOBAL SYSTEMS — Jobs in Deutschland",
   metaDescription:
-    "Kroatische Personalagentur. Arbeit an Glasfaser-Infrastrukturprojekten in Deutschland — Baggerfahrer, Monteure, Helfer. Unterkunft organisiert.",
+    "Kroatisches Unternehmen für Glasfaserinfrastruktur. Wir suchen Baggerfahrer, Monteure und Helfer für Projekte in Deutschland. Unterkunft organisiert.",
   ogTitle: "Job in Deutschland — Baraka Global Systems",
   domain: "barakags.hr",
   company: "BARAKA GLOBAL SYSTEMS",
@@ -391,27 +485,67 @@ const de: Messages = {
   nav: {
     home: "Start",
     about: "Über uns",
+    gallery: "Unsere Arbeiten",
     job: "Stellen",
     apply: "Bewerbung",
     contact: "Kontakt",
   },
   hero: {
-    title: "Ihre Brücke zu sicheren Jobs und zuverlässigen Mitarbeitern",
+    title: "Wir suchen Mitarbeiter für Glasfaser-Infrastrukturprojekte",
     subtitle:
-      "Spezialisierte kroatische Personalagentur im In- und Ausland. Aktueller Fokus: stabile Arbeitsplätze in Deutschland.",
+      "Baraka Global Systems ist ein kroatisches Unternehmen, das Arbeiten am Bau und an der Implementierung von Glasfaserinfrastruktur ausführt. Aktueller Fokus: Projekte in Deutschland.",
     ctaApply: "Jetzt bewerben",
     ctaLearn: "Mehr erfahren",
   },
   about: {
     heading: "Über uns",
     lead: "Baraka Global Systems",
-    p1: "Baraka Global Systems ist eine spezialisierte kroatische Agentur für Arbeitsvermittlung und Personalvermittlung im In- und Ausland. Unser Ziel ist einfach: motivierte, qualifizierte Arbeitskräfte mit geprüften Arbeitgebern zu verbinden.",
-    p2: "Unser aktueller Geschäftsschwerpunkt liegt auf dem deutschen Markt, wo wir mit führenden Partnern stabile Arbeitsplätze, wettbewerbsfähige Bedingungen und vollständige Unterstützung für Arbeitnehmer während des gesamten Integrationsprozesses bieten. Ob Sie eine neue Chance suchen oder ein zuverlässiges Team benötigen — Baraka Global Systems ist Ihr sicherer Partner.",
+    p1: "Baraka Global Systems ist ein kroatisches Unternehmen, spezialisiert auf Industriemontage, Elektroinstallationen sowie Bau- und Infrastrukturarbeiten. Die Arbeiten führen wir mit eigenen Teams vor Ort aus.",
+    p2: "Unser aktueller Schwerpunkt sind Projekte in Deutschland, wo wir unser Team erweitern und motivierte, qualifizierte Mitarbeiter suchen, die direkt mit uns arbeiten. Wir bieten sichere Beschäftigung, wettbewerbsfähige Bedingungen und vollständige Unterstützung während der Arbeit und Integration im Projekt.",
+    areas: [
+      "Industriemontage",
+      "Elektroinstallationen",
+      "Bau- und Infrastrukturarbeiten",
+    ],
+    specialization: "Spezialisiert auf EU-Projekte und Arbeiten vor Ort",
+    servicesHeading: "Unser Leistungsspektrum",
+    services: [
+      "Industriemontage",
+      "Elektroinstallationsarbeiten",
+      "Verlegung von Glasfaser- und Energiekabeln",
+      "Bau- und Infrastrukturarbeiten",
+      "Arbeiten an Energiesystemen",
+      "Montage von Metallkonstruktionen",
+      "Projektleitung und -organisation",
+    ],
     imageAlts: {
       values1:
         "Montage und Zusammenbau, Präzision und Qualität, Teamarbeit — Baraka Global Systems",
       values2:
         "Montage und Anschluss, moderne Technologie, gemeinsam stärker — Baraka Global Systems",
+    },
+  },
+  gallery: {
+    heading: "Unsere Arbeiten",
+    lead: "Einblicke in Projekte vor Ort, Industriemontage, Elektroinstallationen und Infrastrukturarbeiten in Kroatien und der EU.",
+    prev: "Vorheriges Bild",
+    next: "Nächstes Bild",
+    imageAlts: {
+      slide01: "Team bei einem Industrieprojekt — Baraka Global Systems",
+      slide02: "Industriemontage von Maschinen in der Produktionshalle",
+      slide03: "Prüfung und Montage industrieller Rohrleitungen",
+      slide04: "Arbeiten vor Ort an einem Energieprojekt",
+      slide05: "Schwere Industriemontage mit Autokran",
+      slide06: "Kabelverlegung mit Bagger und Kabelpflug",
+      slide07: "Elektroinstallationen — Montage industrieller Schaltschränke",
+      slide08: "Projekt vor Ort — Energieinfrastruktur",
+      slide09: "Arbeiten an Energiesystemen in einer Industrieanlage",
+      slide10: "Grabenaushub für Glasfaser- und Energiekabel",
+      slide11: "Verlegung von Energiekabeln im Graben — Deutschland",
+      slide12: "Sanierung und Ausbesserung der Fahrbahn",
+      slide13: "Kabelverlegung in einem städtischen Gebiet",
+      slide14: "Grabenschnitt für Glasfaserinfrastruktur",
+      slide15: "Bauarbeiten — Asphaltierung einer Straße",
     },
   },
   job: {

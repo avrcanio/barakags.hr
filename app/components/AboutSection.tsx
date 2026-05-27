@@ -18,6 +18,23 @@ export function AboutSection({ t }: Props) {
           <div className="aboutText">
             <p>{t.about.p1}</p>
             <p>{t.about.p2}</p>
+
+            <div className="aboutAreas">
+              {t.about.areas.map((area) => (
+                <span key={area} className="aboutAreaTag">
+                  {area}
+                </span>
+              ))}
+            </div>
+
+            <p className="aboutSpecialization">{t.about.specialization}</p>
+
+            <h3 className="aboutServicesHeading">{t.about.servicesHeading}</h3>
+            <ul className="checkList">
+              {t.about.services.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
           </div>
           <div className="aboutImages">
             {aboutImages.map((img) => (
