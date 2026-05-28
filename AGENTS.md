@@ -59,7 +59,37 @@ Site: https://barakags.hr/hr (ili `/en`, `/de`).
 
 - `.env` — SMTP i ostale tajne (ne commitati)
 - Traefik mreža `proxy` mora postojati (external network)
-- Prijavna forma: `app/api/apply/route.ts` → `office@barakags.hr` preko SMTP iz `.env`
+- Prijavna forma: `app/api/apply/route.ts` → `office@barakags.hr` i `info@barakags.hr` (oba u `MAIL_TO`, zarezom odvojeno)
+
+## Dnevni izvještaj posjećenosti (Cloudflare)
+
+Skripta šalje jučerašnju statistiku na `info@barakags.hr` (ili `ANALYTICS_REPORT_TO`).
+
+**Cloudflare token** — ne u `barakags.hr/.env`. Skripta čita token iz [`/opt/stacks/traefik/.env`](/opt/stacks/traefik/.env) (`CF_DNS_API_TOKEN` / `CF_ANALYTICS_API_TOKEN`, nakon `sync-all-cloudflare-tokens.sh`) ili iz `traefik/secrets/cloudflare/cloudflare_certbot_allzones.api-token`. Token mora imati **Account Analytics Read** (ili Zone Analytics Read). Nakon proširenja dozvola u CF dashboardu: ažuriraj secret datoteku i pokreni `cd /opt/stacks/traefik && ./scripts/sync-all-cloudflare-tokens.sh`. Zone ID se automatski dohvaća za `barakags.hr`.
+
+**Env u `barakags.hr/.env`** (vidi `.env.example`):
+
+- `ANALYTICS_REPORT_TO` — primatelj (default: info@barakags.hr)
+- `ANALYTICS_REPORT_CRON_TZ` — vremenska zona za „jučer” (default: Europe/Zagreb)
+
+**Ručni test:**
+
+```bash
+cd /opt/stacks/barakags.hr
+npm run analytics:report
+```
+
+**Cron (host, svaki dan u 07:00 Europe/Zagreb):**
+
+```bash
+/opt/stacks/barakags.hr/scripts/run-analytics-report.sh
+```
+
+Instalirano u root crontabu. Log: `/var/log/barakags-analytics.log`.
+
+**Celery** — nije u ovom stacku (postoji na npr. `stay.hr`, `dalekopro`). Za jedan dnevni Node job host cron je dovoljan; nema smisla dodavati Redis/Celery samo za barakags.hr.
+
+Podaci: Cloudflare GraphQL (jedinstveni posjetitelji, zahtjevi, top zemlje). Refereri zahtijevaju plaćeni CF plan — na Free planu šaljemo zemlje posjetitelja. Ne mijenja javnu stranicu.
 
 ## Git
 

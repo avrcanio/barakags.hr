@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Messages } from "@/lib/i18n";
+import { FACEBOOK_URL } from "@/lib/site";
 
 type Props = { t: Messages };
 
@@ -32,6 +33,23 @@ export function ContactFooter({ t }: Props) {
             <p>
               <span>{t.contact.phoneLabel}</span>
               <a href={`tel:${t.phone}`}>{t.phoneDisplay}</a>
+            </p>
+            <p className="footerFacebookRow">
+              <a
+                href={FACEBOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footerFacebookLink"
+                aria-label={t.contact.facebookLabel}
+              >
+                <Image
+                  src="/images/facebook-icon.png"
+                  alt=""
+                  width={36}
+                  height={20}
+                  className="footerFacebookIcon"
+                />
+              </a>
             </p>
             <p>
               <span>{t.contact.addressLabel}</span>

@@ -816,6 +816,28 @@ body > * {
   text-decoration: underline;
 }
 
+.footerFacebookRow {
+  margin-bottom: 0.65rem;
+}
+
+.footerFacebookLink {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  line-height: 0;
+}
+
+.footerFacebookLink:hover .footerFacebookIcon {
+  opacity: 0.85;
+}
+
+.footerFacebookIcon {
+  display: block;
+  height: 1.15rem;
+  width: auto;
+  flex-shrink: 0;
+}
+
 .footerBottom {
   margin-top: 2rem;
   padding-top: 1.25rem;

@@ -106,6 +106,7 @@ export type Messages = {
     heading: string;
     emailLabel: string;
     phoneLabel: string;
+    facebookLabel: string;
     addressLabel: string;
     oibLabel: string;
     rights: string;
@@ -283,6 +284,7 @@ const hr: Messages = {
     heading: "Kontakt",
     emailLabel: "E-pošta",
     phoneLabel: "Telefon",
+    facebookLabel: "Facebook",
     addressLabel: "Adresa",
     oibLabel: "OIB",
     rights: "Sva prava pridržana.",
@@ -459,6 +461,7 @@ const en: Messages = {
     heading: "Contact",
     emailLabel: "Email",
     phoneLabel: "Phone",
+    facebookLabel: "Facebook",
     addressLabel: "Address",
     oibLabel: "Company ID (OIB)",
     rights: "All rights reserved.",
@@ -638,6 +641,7 @@ const de: Messages = {
     heading: "Kontakt",
     emailLabel: "E-Mail",
     phoneLabel: "Telefon",
+    facebookLabel: "Facebook",
     addressLabel: "Adresse",
     oibLabel: "Unternehmens-ID (OIB)",
     rights: "Alle Rechte vorbehalten.",

@@ -10,7 +10,12 @@ export type ApplyPayload = {
   locale: string;
 };
 
-function getTransport() {
+function parseRecipients(value: string | undefined): string[] {
+  if (!value?.trim()) return [];
+  return value.split(",").map((e) => e.trim()).filter(Boolean);
+}
+
+export function getTransport() {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
@@ -30,6 +35,38 @@ function getTransport() {
   });
 }
 
+export async function sendEmail(opts: {
+  to: string | string[];
+  subject: string;
+  text: string;
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  const transport = getTransport();
+  if (!transport) {
+    return { ok: false, error: "SMTP not configured" };
+  }
+
+  const from = process.env.MAIL_FROM ?? process.env.SMTP_USER;
+  if (!from) {
+    return { ok: false, error: "SMTP not configured" };
+  }
+
+  try {
+    await transport.sendMail({
+      from,
+      to: opts.to,
+      subject: opts.subject,
+      text: opts.text,
+    });
+    return { ok: true };
+  } catch (err) {
+    console.error("sendEmail:", err);
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Send failed",
+    };
+  }
+}
+
 const positionLabels: Record<JobPosition, string> = {
   excavator: "Bagerist / Rukovatelj strojeva",
   fiber: "Monter optičkih mreža",
@@ -39,13 +76,14 @@ const positionLabels: Record<JobPosition, string> = {
 export async function sendApplicationEmail(
   data: ApplyPayload
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const transport = getTransport();
-  if (!transport) {
+  const recipients = parseRecipients(process.env.MAIL_TO);
+  const to =
+    recipients.length > 0
+      ? recipients
+      : [process.env.SMTP_USER].filter((e): e is string => Boolean(e));
+  if (to.length === 0) {
     return { ok: false, error: "SMTP not configured" };
   }
-
-  const to = process.env.MAIL_TO ?? process.env.SMTP_USER;
-  const from = process.env.MAIL_FROM ?? process.env.SMTP_USER;
 
   const subject = `[barakags.hr] Nova prijava — ${data.firstName} ${data.lastName}`;
   const text = [
@@ -62,14 +100,5 @@ export async function sendApplicationEmail(
     .filter(Boolean)
     .join("\n");
 
-  try {
-    await transport.sendMail({ from, to, subject, text });
-    return { ok: true };
-  } catch (err) {
-    console.error("sendApplicationEmail:", err);
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : "Send failed",
-    };
-  }
+  return sendEmail({ to, subject, text });
 }
