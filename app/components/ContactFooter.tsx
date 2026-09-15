@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { Messages } from "@/lib/i18n";
-import { FACEBOOK_URL } from "@/lib/site";
+import { FACEBOOK_URL, PHONES } from "@/lib/site";
 
 type Props = { t: Messages };
 
@@ -32,7 +32,11 @@ export function ContactFooter({ t }: Props) {
             </p>
             <p>
               <span>{t.contact.phoneLabel}</span>
-              <a href={`tel:${t.phone}`}>{t.phoneDisplay}</a>
+              {PHONES.map((p) => (
+                <a key={p.tel} href={`tel:${p.tel}`} className="footerPhoneLink">
+                  {p.display}
+                </a>
+              ))}
             </p>
             <p className="footerFacebookRow">
               <a

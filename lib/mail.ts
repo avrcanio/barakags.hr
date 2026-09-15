@@ -68,9 +68,13 @@ export async function sendEmail(opts: {
 }
 
 const positionLabels: Record<JobPosition, string> = {
-  excavator: "Bagerist / Rukovatelj strojeva",
-  fiber: "Monter optičkih mreža",
-  helper: "Pomoćni radnik",
+  team: "Gotova ekipa (Stuttgart)",
+  excavator: "Bagerist",
+  driverC: "Vozač C kategorije",
+  paving: "Radnik za postavljanje kocki / flasti",
+  construction: "Građevinski radnik",
+  helper: "Pomoćni građevinski radnik",
+  electrician: "Industrijski električar / Elektromonter",
 };
 
 export async function sendApplicationEmail(

@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { sendApplicationEmail, type ApplyPayload } from "@/lib/mail";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { isLocale, type JobPosition } from "@/lib/i18n";
-
-const positions: JobPosition[] = ["excavator", "fiber", "helper"];
+import { isJobPosition, isLocale, type JobPosition } from "@/lib/i18n";
 
 function isPosition(v: string): v is JobPosition {
-  return positions.includes(v as JobPosition);
+  return isJobPosition(v);
 }
 
 export async function POST(request: Request) {

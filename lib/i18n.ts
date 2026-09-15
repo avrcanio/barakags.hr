@@ -8,7 +8,61 @@ export function isLocale(s: string): s is Locale {
 
 import type { CarouselImageId } from "@/lib/carousel";
 
-export type JobPosition = "excavator" | "fiber" | "helper";
+export const JOB_POSITIONS = [
+  "team",
+  "excavator",
+  "driverC",
+  "paving",
+  "construction",
+  "helper",
+  "electrician",
+] as const;
+
+export type JobPosition = (typeof JOB_POSITIONS)[number];
+
+export function isJobPosition(v: string): v is JobPosition {
+  return (JOB_POSITIONS as readonly string[]).includes(v);
+}
+
+export type JobRole = {
+  title: string;
+  location?: string;
+  desc?: string;
+  tasks?: string[];
+};
+
+export type JobPayItem = {
+  value: string;
+  label: string;
+};
+
+export type JobListing = {
+  id: string;
+  featured?: boolean;
+  badge?: string;
+  title: string;
+  slogan?: string;
+  callouts?: string[];
+  positionsLabel: string;
+  positions: string;
+  locationLabel: string;
+  location: string;
+  startLabel: string;
+  start: string;
+  intro: string;
+  payHeading?: string;
+  payItems?: JobPayItem[];
+  openHeading: string;
+  roles: JobRole[];
+  tasksHeading?: string;
+  tasks?: string[];
+  expectHeading?: string;
+  expect?: string[];
+  offerHeading: string;
+  offer: string[];
+  preference?: string;
+  photoAlts?: [string, string, string];
+};
 
 export type Messages = {
   metaTitle: string;
@@ -37,6 +91,7 @@ export type Messages = {
   hero: {
     title: string;
     subtitle: string;
+    highlight: string;
     ctaApply: string;
     ctaLearn: string;
   };
@@ -63,24 +118,9 @@ export type Messages = {
   };
   job: {
     heading: string;
-    title: string;
-    positionsLabel: string;
-    positions: string;
-    locationLabel: string;
-    location: string;
-    startLabel: string;
-    start: string;
-    intro: string;
-    intro2: string;
-    openHeading: string;
-    roles: { title: string; desc: string }[];
-    tasksHeading: string;
-    tasks: string[];
-    expectHeading: string;
-    expect: string[];
-    offerHeading: string;
-    offer: string[];
+    listings: JobListing[];
     cta: string;
+    tagline: string;
     imageAlt: string;
   };
   apply: {
@@ -114,10 +154,11 @@ export type Messages = {
 };
 
 const hr: Messages = {
-  metaTitle: "BARAKA GLOBAL SYSTEMS — Poslovi u Njemačkoj",
+  metaTitle:
+    "BARAKA GLOBAL SYSTEMS — Gotove ekipe, Stuttgart | Optička infrastruktura",
   metaDescription:
-    "Hrvatska tvrtka za optičku infrastrukturu. Tražimo bageriste, montere i pomoćne radnike za projekte u Njemačkoj. Osiguran smještaj.",
-  ogTitle: "Posao u Njemačkoj — Baraka Global Systems",
+    "Tražimo gotove ekipe za optičku infrastrukturu u Stuttgartu od 01.10.2026. Također: bageristi i građevinski radnici (Mannheim, Dortmund) te industrijski električari (Švedska i Njemačka).",
+  ogTitle: "Gotove ekipe — Stuttgart | Baraka Global Systems",
   domain: "barakags.hr",
   company: "BARAKA GLOBAL SYSTEMS",
   slogan: "Pouzdan partner. Jaka mreža. Bolja budućnost.",
@@ -139,11 +180,12 @@ const hr: Messages = {
     contact: "Kontakt",
   },
   hero: {
-    title: "Tražimo radnike za projekte optičke infrastrukture",
+    title: "Tražimo gotove ekipe za optičku infrastrukturu — Stuttgart",
     subtitle:
-      "Baraka Global Systems je hrvatska tvrtka koja izvodi radove na izgradnji i implementaciji optičke infrastrukture. Trenutačni fokus: projekti u Njemačkoj.",
+      "Stabilan posao i dobra zarada. Početak 01.10.2026. u Stuttgartu, Njemačka. Ostale pozicije: bageristi i građevinski radnici (Mannheim, Dortmund) te industrijski električari (Švedska i Njemačka).",
+    highlight: "17 €/m za cijelu ekipu · 70–120 m/dan · ~3.800–5.000 €/mj.",
     ctaApply: "Prijavi se",
-    ctaLearn: "Saznaj više",
+    ctaLearn: "Oglas Stuttgart",
   },
   about: {
     heading: "O nama",
@@ -198,62 +240,207 @@ const hr: Messages = {
   },
   job: {
     heading: "Otvorene pozicije",
-    title: "Rad na projektima u Njemačkoj",
-    positionsLabel: "Pozicije",
-    positions: "Bageristi • Monteri optičkih mreža • Pomoćni radnici (m/ž/d)",
-    locationLabel: "Lokacija",
-    location: "Njemačka",
-    startLabel: "Početak rada",
-    start: "Hitno / Po dogovoru",
-    intro:
-      "Zbog kontinuiranog rasta, povećanog obujma posla i širenja dugoročnih projekata u Njemačkoj, Baraka Global Systems traži veći broj motiviranih djelatnika za rad na izgradnji i implementaciji moderne optičke infrastrukture.",
-    intro2:
-      "Tražimo ozbiljne, odgovorne i timski orijentirane ljude koji žele stabilnu karijeru i rad u profesionalnom okruženju.",
-    openHeading: "Otvorena radna mjesta",
-    roles: [
+    listings: [
       {
-        title: "Bagerist / Rukovatelj građevinskim strojevima",
-        desc: "Strojni iskop, priprema rovova i rad na terenu uz modernu mehanizaciju.",
+        id: "stuttgart",
+        featured: true,
+        badge: "Gotove ekipe · Stuttgart",
+        title: "Tražimo gotove ekipe za optičku infrastrukturu",
+        slogan: "Gradimo povezanu budućnost!",
+        callouts: [
+          "Stabilan posao i dobra zarada",
+          "Tanke cijevi za optiku",
+        ],
+        positionsLabel: "Sastav ekipe",
+        positions:
+          "1 bagerist • 1 vozač C • 3 radnika kocke/flaste • 2–3 pomoćna radnika",
+        locationLabel: "Lokacija",
+        location: "Stuttgart, Njemačka",
+        startLabel: "Početak rada",
+        start: "01.10.2026.",
+        intro:
+          "Baraka Global Systems traži gotove ekipe (7–8 ljudi) za radove na optičkoj infrastrukturi u Stuttgartu. Prednost imaju uigrane ekipe koje se već poznaju.",
+        payHeading: "Plaća i zarada",
+        payItems: [
+          {
+            value: "17 €",
+            label: "po dužnom metru za cijelu ekipu",
+          },
+          {
+            value: "70–120 m",
+            label: "dnevno trenutno izvode ekipe (ovisno o trasi)",
+          },
+          {
+            value: "3.800–5.000 €",
+            label:
+              "procijenjena mjesečna zarada po osobi (dijeli se prema dogovoru ekipe)",
+          },
+        ],
+        openHeading: "Sastav ekipe (7–8 ljudi)",
+        roles: [
+          {
+            title: "1 Bagerist",
+            location: "Stuttgart",
+            desc: "Strojni iskop mini bagerom na trasi optičke infrastrukture.",
+          },
+          {
+            title: "1 Vozač C kategorije",
+            location: "Stuttgart",
+            desc: "Prijevoz i logistika ekipe te opreme.",
+          },
+          {
+            title: "3 radnika za postavljanje kocki / flasti",
+            location: "Stuttgart",
+            desc: "Skidanje i vraćanje postojećih betonskih kocki / flasti.",
+          },
+          {
+            title: "2–3 pomoćna radnika",
+            location: "Stuttgart",
+            desc: "Pomoć ekipe na trasi, rovu i završnom uređenju.",
+          },
+        ],
+        tasksHeading: "Opis posla",
+        tasks: [
+          "Skidanje postojećih betonskih kocki / flasti.",
+          "Strojni iskop mini bagerom (širina cca 45 cm, dubina do 60 cm).",
+          "Polaganje optičkih mikrocijevi (najčešće 1–3 cijevi).",
+          "Zatrpavanje rova.",
+          "Vraćanje kocki / flasti u prvobitno stanje.",
+        ],
+        offerHeading: "Što osiguravamo",
+        offer: [
+          "Prijava i ugovor u hrvatskoj tvrtki.",
+          "Smještaj.",
+          "Prijevoz.",
+          "Svi strojevi, vozila i alat za rad.",
+        ],
+        preference:
+          "Tražimo uigrane ekipe koje se već poznaju.",
+        photoAlts: [
+          "Iskop rova za optičku infrastrukturu",
+          "Polaganje tankih cijevi za optiku",
+          "Priprema trase za mikrocijevi",
+        ],
       },
       {
-        title: "Monter optičkih mreža i kabela",
-        desc: "Polaganje, spajanje i terminiranje optičke infrastrukture.",
+        id: "construction",
+        title: "BARAKA GLOBAL SYSTEMS d.o.o. ZAPOŠLJAVA",
+        positionsLabel: "Pozicije",
+        positions:
+          "Bageristi • Građevinski radnici • Pomoćni građevinski radnici",
+        locationLabel: "Lokacija",
+        location: "Mannheim i Dortmund, Njemačka",
+        startLabel: "Početak rada",
+        start: "Po dogovoru",
+        intro:
+          "Baraka Global Systems d.o.o. traži radnike za izgradnju optičke infrastrukture na projektima u Mannheimu i Dortmundu.",
+        openHeading: "Otvorena radna mjesta",
+        roles: [
+          {
+            title: "Bageristi za rad na izgradnji optičke infrastrukture",
+            location: "Mannheim i Dortmund",
+            tasks: [
+              "Iskop kanala za polaganje optičke infrastrukture.",
+              "Širina kanala 45 cm, dubina do 50 cm.",
+              "Upravljanje mini bagerima i drugom građevinskom mehanizacijom.",
+              "Suradnja s monterima i građevinskim timom.",
+              "Rad prema projektnoj dokumentaciji i sigurnosnim pravilima.",
+            ],
+          },
+          {
+            title: "Građevinski radnici za optičke projekte",
+            location: "Mannheim i Dortmund",
+            tasks: [
+              "Skidanje betonskih ploča i opločnika.",
+              "Ručni iskop i priprema trase.",
+              "Polaganje zaštitnih cijevi i optičkih kabela.",
+              "Vraćanje betonskih ploča i opločnika u prvobitno stanje.",
+              "Završno uređenje površina nakon izvedenih radova.",
+            ],
+          },
+          {
+            title:
+              "Pomoćni građevinski radnici za betonske ploče i opločnike",
+            location: "Mannheim i Dortmund",
+            tasks: [
+              "Pomoć pri skidanju i vraćanju betonskih ploča i opločnika.",
+              "Priprema gradilišta i radne trase.",
+              "Pomoć pri polaganju zaštitnih cijevi i optičkih instalacija.",
+              "Održavanje urednosti i sigurnosti gradilišta.",
+              "Ostali pomoćni građevinski poslovi prema uputama voditelja gradilišta.",
+            ],
+          },
+        ],
+        expectHeading: "Od kandidata očekujemo",
+        expect: [
+          "Iskustvo na građevinskim ili infrastrukturnim radovima je prednost.",
+          "Odgovornost, samostalnost i timski rad.",
+          "Vozačka dozvola B kategorije je prednost.",
+          "Spremnost za rad u Njemačkoj.",
+        ],
+        offerHeading: "Nudimo",
+        offer: [
+          "Dugoročan i siguran posao.",
+          "Redovita i stimulativna primanja.",
+          "Organiziran smještaj.",
+          "Prijevoz do gradilišta.",
+          "Osiguranu radnu opremu.",
+          "Mogućnost stalnog zaposlenja i profesionalnog napredovanja.",
+        ],
       },
       {
-        title: "Pomoćni radnik",
-        desc: "Polaganje kabela, građevinski i opći terenski radovi uz tim.",
+        id: "electrician",
+        title: "Tražimo industrijske električare — Švedska / Njemačka",
+        positionsLabel: "Pozicije",
+        positions: "Industrijski električari / Elektromonteri",
+        locationLabel: "Lokacija",
+        location: "Švedska i Njemačka",
+        startLabel: "Početak rada",
+        start: "Po dogovoru",
+        intro:
+          "Baraka Global Systems d.o.o. zbog novih projekata i proširenja poslovanja zapošljava industrijske električare i elektromontere.",
+        openHeading: "Opis posla",
+        roles: [
+          {
+            title: "Industrijski električari / Elektromonteri",
+            location: "Švedska i Njemačka",
+            tasks: [
+              "Rad u automobilskoj industriji.",
+              "Industrijske elektroinstalacije.",
+              "Montaža i spajanje elektroormara.",
+              "Elektroinstalacije strojeva i proizvodnih linija.",
+              "Polaganje i spajanje energetskih i signalnih kabela.",
+              "Montaža kabelskih trasa.",
+              "Rad prema elektro-shemama i tehničkoj dokumentaciji.",
+              "Instalacija senzora, motora i industrijske opreme.",
+              "Održavanje industrijskih postrojenja.",
+            ],
+          },
+        ],
+        expectHeading: "Od kandidata očekujemo",
+        expect: [
+          "Iskustvo u industrijskim elektroinstalacijama ili srodnim poslovima.",
+          "Odgovornost, samostalnost i timski rad.",
+          "Spremnost za rad u Švedskoj i Njemačkoj.",
+        ],
+        offerHeading: "Nudimo",
+        offer: [
+          "Dugoročan i siguran posao.",
+          "Redovna i konkurentna primanja.",
+          "Organiziran i plaćen smještaj.",
+          "Organiziran prijevoz.",
+          "Urednu prijavu i potrebnu dokumentaciju.",
+          "Rad na ozbiljnim industrijskim projektima.",
+          "Mogućnost dugoročne suradnje i napredovanja.",
+        ],
+        preference:
+          "Prednost imaju kandidati s iskustvom u autoindustriji, industrijskim postrojenjima i automatiziranim proizvodnim linijama.",
       },
-    ],
-    tasksHeading: "Opis poslova",
-    tasks: [
-      "Strojni iskop i priprema rovova za polaganje telekomunikacijske mreže.",
-      "Polaganje, razvlačenje i uvlačenje optičkih i energetskih kabela.",
-      "Spajanje, terminiranje i montaža napredne optičke infrastrukture.",
-      "Pomoćni građevinski, zemljani i opći terenski radovi.",
-      "Sanacija i vraćanje terena u prvobitno stanje nakon završetka radova.",
-      "Strogo pridržavanje zaštite na radu i internih standarda kvalitete.",
-    ],
-    expectHeading: "Što očekujemo",
-    expect: [
-      "Poželjno (ali ne i uvjet) iskustvo na građevinskim, monterskim ili sličnim terenskim poslovima.",
-      "Visoka razina odgovornosti, točnosti i ozbiljnosti u pristupu radu.",
-      "Spremnost na timski rad i rad na terenu u Njemačkoj.",
-      "Vozačka dozvola B kategorije (prednost, ali nije eliminacijski faktor).",
-      "Poznavanje njemačkog jezika je prednost, ali nije uvjet za prijavu.",
-    ],
-    offerHeading: "Što nudimo",
-    offer: [
-      "Dugoročan i siguran posao na stabilnim projektima u Njemačkoj.",
-      "Iznadprosječna i redovita primanja u skladu s iskustvom i pozicijom.",
-      "Potpuno organiziran i plaćen smještaj blizu mjesta rada.",
-      "Osigurana radna odjeća, zaštitna oprema i moderni strojevi.",
-      "Brz i jednostavan proces početka rada (administrativni koraci).",
-      "Profesionalno, korektno i podržavajuće radno okruženje.",
-      "Mogućnost profesionalnog napredovanja kroz dugoročnu suradnju.",
     ],
     cta: "Prijavi se na oglas",
+    tagline: "Gradimo povezanu budućnost!",
     imageAlt:
-      "Baraka Global Systems — rad na terenu, montaža optike, tim na projektu u Njemačkoj",
+      "Baraka Global Systems — rad na terenu, optička infrastruktura, tim na projektu u Njemačkoj",
   },
   apply: {
     heading: "Prijava",
@@ -265,9 +452,13 @@ const hr: Messages = {
     position: "Pozicija",
     positionPlaceholder: "Odaberite poziciju",
     positions: {
-      excavator: "Bagerist / Rukovatelj strojeva",
-      fiber: "Monter optičkih mreža",
-      helper: "Pomoćni radnik",
+      team: "Gotova ekipa (Stuttgart)",
+      excavator: "Bagerist",
+      driverC: "Vozač C kategorije",
+      paving: "Radnik za postavljanje kocki / flasti",
+      construction: "Građevinski radnik",
+      helper: "Pomoćni građevinski radnik",
+      electrician: "Industrijski električar / Elektromonter",
     },
     note: "Kratka napomena (opcionalno)",
     notePlaceholder: "Iskustvo, dostupnost, dodatne informacije…",
@@ -292,10 +483,11 @@ const hr: Messages = {
 };
 
 const en: Messages = {
-  metaTitle: "BARAKA GLOBAL SYSTEMS — Jobs in Germany",
+  metaTitle:
+    "BARAKA GLOBAL SYSTEMS — Complete teams, Stuttgart | Optical infrastructure",
   metaDescription:
-    "Croatian optical infrastructure company hiring excavator operators, fiber installers and assistants for projects in Germany. Accommodation provided.",
-  ogTitle: "Jobs in Germany — Baraka Global Systems",
+    "We are hiring complete teams for optical infrastructure in Stuttgart from 01.10.2026. Also open: excavator operators and construction workers (Mannheim, Dortmund) and industrial electricians (Sweden and Germany).",
+  ogTitle: "Complete teams — Stuttgart | Baraka Global Systems",
   domain: "barakags.hr",
   company: "BARAKA GLOBAL SYSTEMS",
   slogan: "Reliable partner. Strong network. Better future.",
@@ -317,11 +509,12 @@ const en: Messages = {
     contact: "Contact",
   },
   hero: {
-    title: "We're hiring for optical infrastructure projects",
+    title: "We're hiring complete teams for optical infrastructure — Stuttgart",
     subtitle:
-      "Baraka Global Systems is a Croatian company that carries out construction and implementation of optical infrastructure. Current focus: projects in Germany.",
+      "Stable work and good earnings. Start 01.10.2026 in Stuttgart, Germany. Other roles: excavator operators and construction workers (Mannheim, Dortmund) plus industrial electricians (Sweden and Germany).",
+    highlight: "€17/m for the whole team · 70–120 m/day · ~€3,800–€5,000 / month",
     ctaApply: "Apply now",
-    ctaLearn: "Learn more",
+    ctaLearn: "Stuttgart offer",
   },
   about: {
     heading: "About us",
@@ -376,62 +569,203 @@ const en: Messages = {
   },
   job: {
     heading: "Open positions",
-    title: "Work on projects in Germany",
-    positionsLabel: "Positions",
-    positions: "Excavator operators • Fiber network installers • Assistants (m/f/d)",
-    locationLabel: "Location",
-    location: "Germany",
-    startLabel: "Start date",
-    start: "Immediate / By agreement",
-    intro:
-      "Due to continued growth, increased workload, and expansion of long-term projects in Germany, Baraka Global Systems is hiring motivated professionals for the construction and implementation of modern optical infrastructure.",
-    intro2:
-      "We are looking for serious, responsible, team-oriented people who want a stable career in a professional environment.",
-    openHeading: "Open roles",
-    roles: [
+    listings: [
       {
-        title: "Excavator operator / Plant operator",
-        desc: "Mechanical excavation, trench preparation, and on-site work with modern machinery.",
+        id: "stuttgart",
+        featured: true,
+        badge: "Complete teams · Stuttgart",
+        title: "We're looking for complete teams for optical infrastructure",
+        slogan: "Building a connected future!",
+        callouts: ["Stable work and good earnings", "Thin pipes for fiber optics"],
+        positionsLabel: "Team composition",
+        positions:
+          "1 excavator operator • 1 category C driver • 3 paving/slab workers • 2–3 assistants",
+        locationLabel: "Location",
+        location: "Stuttgart, Germany",
+        startLabel: "Start date",
+        start: "01.10.2026",
+        intro:
+          "Baraka Global Systems is hiring complete teams (7–8 people) for optical infrastructure works in Stuttgart. Preference is given to coordinated teams who already know each other.",
+        payHeading: "Pay and earnings",
+        payItems: [
+          {
+            value: "€17",
+            label: "per linear meter for the whole team",
+          },
+          {
+            value: "70–120 m",
+            label: "per day teams currently complete (depending on the route)",
+          },
+          {
+            value: "€3,800–€5,000",
+            label:
+              "estimated individual monthly pay (split by team agreement)",
+          },
+        ],
+        openHeading: "Team composition (7–8 people)",
+        roles: [
+          {
+            title: "1 Excavator operator",
+            location: "Stuttgart",
+            desc: "Mini excavator trenching on the optical infrastructure route.",
+          },
+          {
+            title: "1 Category C driver",
+            location: "Stuttgart",
+            desc: "Transport and logistics for the team and equipment.",
+          },
+          {
+            title: "3 workers for paving stones / slabs",
+            location: "Stuttgart",
+            desc: "Removing and restoring existing paving stones / slabs.",
+          },
+          {
+            title: "2–3 assistant workers",
+            location: "Stuttgart",
+            desc: "Supporting the team on the route, trench and finishing work.",
+          },
+        ],
+        tasksHeading: "Job description",
+        tasks: [
+          "Remove existing paving stones / slabs.",
+          "Mini excavator trench (about 45 cm wide, up to 60 cm deep).",
+          "Lay optical micro-cables / micro-ducts (usually 1–3).",
+          "Backfill the trench.",
+          "Restore paving stones / slabs to their original condition.",
+        ],
+        offerHeading: "What we provide",
+        offer: [
+          "Registration and contract via the Croatian company.",
+          "Accommodation.",
+          "Transport.",
+          "All machinery, vehicles and tools for the work.",
+        ],
+        preference:
+          "We are looking for coordinated teams who already know each other.",
+        photoAlts: [
+          "Trenching for optical infrastructure",
+          "Laying thin pipes for fiber optics",
+          "Route preparation for micro-ducts",
+        ],
       },
       {
-        title: "Fiber network and cable installer",
-        desc: "Laying, splicing, and terminating optical infrastructure.",
+        id: "construction",
+        title: "BARAKA GLOBAL SYSTEMS d.o.o. IS HIRING",
+        positionsLabel: "Positions",
+        positions:
+          "Excavator operators • Construction workers • Construction assistants",
+        locationLabel: "Location",
+        location: "Mannheim and Dortmund, Germany",
+        startLabel: "Start date",
+        start: "By agreement",
+        intro:
+          "Baraka Global Systems d.o.o. is hiring workers for optical infrastructure construction projects in Mannheim and Dortmund.",
+        openHeading: "Open roles",
+        roles: [
+          {
+            title: "Excavator operators for optical infrastructure construction",
+            location: "Mannheim and Dortmund",
+            tasks: [
+              "Trench excavation for laying optical infrastructure.",
+              "Trench width 45 cm, depth up to 50 cm.",
+              "Operating mini excavators and other construction machinery.",
+              "Cooperation with installers and the construction team.",
+              "Work according to project documentation and safety rules.",
+            ],
+          },
+          {
+            title: "Construction workers for optical projects",
+            location: "Mannheim and Dortmund",
+            tasks: [
+              "Removing concrete slabs and paving stones.",
+              "Manual excavation and route preparation.",
+              "Laying protective ducts and optical cables.",
+              "Restoring concrete slabs and paving to original condition.",
+              "Final surface finishing after completed works.",
+            ],
+          },
+          {
+            title: "Construction assistants for concrete slabs and paving",
+            location: "Mannheim and Dortmund",
+            tasks: [
+              "Assisting with removing and reinstalling concrete slabs and paving.",
+              "Site and work route preparation.",
+              "Assisting with laying protective ducts and optical installations.",
+              "Maintaining site orderliness and safety.",
+              "Other auxiliary construction tasks as directed by the site manager.",
+            ],
+          },
+        ],
+        expectHeading: "What we expect",
+        expect: [
+          "Experience in construction or infrastructure work is an advantage.",
+          "Responsibility, independence and teamwork.",
+          "Category B driving licence is an advantage.",
+          "Willingness to work in Germany.",
+        ],
+        offerHeading: "What we offer",
+        offer: [
+          "Long-term, secure employment.",
+          "Regular and competitive pay.",
+          "Organised accommodation.",
+          "Transport to the construction site.",
+          "Work equipment provided.",
+          "Opportunity for permanent employment and career development.",
+        ],
       },
       {
-        title: "Assistant worker",
-        desc: "Cable laying, construction and general field work as part of the team.",
+        id: "electrician",
+        title: "Hiring industrial electricians — Sweden / Germany",
+        positionsLabel: "Positions",
+        positions: "Industrial electricians / Electrical installers",
+        locationLabel: "Location",
+        location: "Sweden and Germany",
+        startLabel: "Start date",
+        start: "By agreement",
+        intro:
+          "Baraka Global Systems d.o.o. is hiring industrial electricians and electrical installers due to new projects and business expansion.",
+        openHeading: "Job description",
+        roles: [
+          {
+            title: "Industrial electricians / Electrical installers",
+            location: "Sweden and Germany",
+            tasks: [
+              "Work in the automotive industry.",
+              "Industrial electrical installations.",
+              "Assembly and connection of electrical cabinets.",
+              "Electrical installations for machines and production lines.",
+              "Laying and connecting power and signal cables.",
+              "Installation of cable trays and routes.",
+              "Work according to electrical schematics and technical documentation.",
+              "Installation of sensors, motors and industrial equipment.",
+              "Maintenance of industrial plants.",
+            ],
+          },
+        ],
+        expectHeading: "What we expect",
+        expect: [
+          "Experience in industrial electrical installations or related work.",
+          "Responsibility, independence and teamwork.",
+          "Willingness to work in Sweden and Germany.",
+        ],
+        offerHeading: "What we offer",
+        offer: [
+          "Long-term, secure employment.",
+          "Regular and competitive pay.",
+          "Organised and paid accommodation.",
+          "Organised transport.",
+          "Proper registration and required documentation.",
+          "Work on serious industrial projects.",
+          "Opportunity for long-term cooperation and career development.",
+        ],
+        preference:
+          "Candidates with experience in the automotive industry, industrial plants and automated production lines are preferred.",
       },
-    ],
-    tasksHeading: "Job description",
-    tasks: [
-      "Mechanical excavation and trench preparation for telecommunications networks.",
-      "Laying, pulling, and blowing optical and power cables.",
-      "Splicing, terminating, and installing advanced optical infrastructure.",
-      "Auxiliary construction, earthworks, and general field tasks.",
-      "Site restoration after completion of works.",
-      "Strict adherence to health & safety and internal quality standards.",
-    ],
-    expectHeading: "What we expect",
-    expect: [
-      "Experience in construction, installation, or similar field work is preferred but not required.",
-      "High level of responsibility, accuracy, and professionalism.",
-      "Willingness to work in a team and on site in Germany.",
-      "Category B driving licence is an advantage but not mandatory.",
-      "German language skills are an advantage; not required to apply.",
-    ],
-    offerHeading: "What we offer",
-    offer: [
-      "Long-term, secure employment on stable projects in Germany.",
-      "Above-average, regular pay according to experience and role.",
-      "Fully organised and paid accommodation near the workplace.",
-      "Work clothing, protective equipment, and modern machinery provided.",
-      "Fast, straightforward onboarding (administrative support).",
-      "Professional, fair, and supportive working environment.",
-      "Opportunity for career development through long-term cooperation.",
     ],
     cta: "Apply for this job",
+    tagline: "Building a connected future!",
     imageAlt:
-      "Baraka Global Systems — field work, fiber installation, team on a project in Germany",
+      "Baraka Global Systems — field work, optical infrastructure, team on a project in Germany",
   },
   apply: {
     heading: "Application",
@@ -443,9 +777,13 @@ const en: Messages = {
     position: "Position",
     positionPlaceholder: "Select a position",
     positions: {
+      team: "Complete team (Stuttgart)",
       excavator: "Excavator operator",
-      fiber: "Fiber network installer",
-      helper: "Assistant worker",
+      driverC: "Category C driver",
+      paving: "Paving / slab worker",
+      construction: "Construction worker",
+      helper: "Construction assistant",
+      electrician: "Industrial electrician / Electrical installer",
     },
     note: "Short note (optional)",
     notePlaceholder: "Experience, availability, additional info…",
@@ -469,10 +807,11 @@ const en: Messages = {
 };
 
 const de: Messages = {
-  metaTitle: "BARAKA GLOBAL SYSTEMS — Jobs in Deutschland",
+  metaTitle:
+    "BARAKA GLOBAL SYSTEMS — Eingespielte Teams, Stuttgart | Glasfaserinfrastruktur",
   metaDescription:
-    "Kroatisches Unternehmen für Glasfaserinfrastruktur. Wir suchen Baggerfahrer, Monteure und Helfer für Projekte in Deutschland. Unterkunft organisiert.",
-  ogTitle: "Job in Deutschland — Baraka Global Systems",
+    "Wir suchen eingespielte Teams für Glasfaserinfrastruktur in Stuttgart ab 01.10.2026. Außerdem: Baggerfahrer und Bauarbeiter (Mannheim, Dortmund) sowie Industrieelektriker (Schweden und Deutschland).",
+  ogTitle: "Eingespielte Teams — Stuttgart | Baraka Global Systems",
   domain: "barakags.hr",
   company: "BARAKA GLOBAL SYSTEMS",
   slogan: "Zuverlässiger Partner. Starkes Netz. Bessere Zukunft.",
@@ -494,11 +833,14 @@ const de: Messages = {
     contact: "Kontakt",
   },
   hero: {
-    title: "Wir suchen Mitarbeiter für Glasfaser-Infrastrukturprojekte",
+    title:
+      "Wir suchen eingespielte Teams für Glasfaserinfrastruktur — Stuttgart",
     subtitle:
-      "Baraka Global Systems ist ein kroatisches Unternehmen, das Arbeiten am Bau und an der Implementierung von Glasfaserinfrastruktur ausführt. Aktueller Fokus: Projekte in Deutschland.",
+      "Stabile Arbeit und gutes Einkommen. Beginn 01.10.2026 in Stuttgart, Deutschland. Weitere Stellen: Baggerfahrer und Bauarbeiter (Mannheim, Dortmund) sowie Industrieelektriker (Schweden und Deutschland).",
+    highlight:
+      "17 €/m für das gesamte Team · 70–120 m/Tag · ca. 3.800–5.000 €/Monat",
     ctaApply: "Jetzt bewerben",
-    ctaLearn: "Mehr erfahren",
+    ctaLearn: "Angebot Stuttgart",
   },
   about: {
     heading: "Über uns",
@@ -553,63 +895,205 @@ const de: Messages = {
   },
   job: {
     heading: "Offene Stellen",
-    title: "Arbeit an Projekten in Deutschland",
-    positionsLabel: "Positionen",
-    positions:
-      "Baggerfahrer • Glasfasernetz-Monteure • Hilfskräfte (m/w/d)",
-    locationLabel: "Standort",
-    location: "Deutschland",
-    startLabel: "Arbeitsbeginn",
-    start: "Sofort / Nach Vereinbarung",
-    intro:
-      "Aufgrund des kontinuierlichen Wachstums, erhöhten Arbeitsvolumens und der Ausweitung langfristiger Projekte in Deutschland sucht Baraka Global Systems motivierte Fachkräfte für den Bau und die Implementierung moderner Glasfaserinfrastruktur.",
-    intro2:
-      "Wir suchen ernsthafte, verantwortungsvolle und teamorientierte Menschen, die eine stabile Karriere in einem professionellen Umfeld anstreben.",
-    openHeading: "Offene Arbeitsplätze",
-    roles: [
+    listings: [
       {
-        title: "Baggerfahrer / Maschinenführer",
-        desc: "Mechanischer Aushub, Grabenvorbereitung und Arbeit vor Ort mit moderner Technik.",
+        id: "stuttgart",
+        featured: true,
+        badge: "Eingespielte Teams · Stuttgart",
+        title: "Wir suchen eingespielte Teams für Glasfaserinfrastruktur",
+        slogan: "Wir bauen eine vernetzte Zukunft!",
+        callouts: [
+          "Stabile Arbeit und gutes Einkommen",
+          "Dünne Rohre für Glasfaser",
+        ],
+        positionsLabel: "Teamzusammensetzung",
+        positions:
+          "1 Baggerfahrer • 1 Fahrer Klasse C • 3 Pflaster-/Plattenleger • 2–3 Hilfskräfte",
+        locationLabel: "Standort",
+        location: "Stuttgart, Deutschland",
+        startLabel: "Arbeitsbeginn",
+        start: "01.10.2026",
+        intro:
+          "Baraka Global Systems sucht eingespielte Teams (7–8 Personen) für Glasfaserinfrastruktur in Stuttgart. Bevorzugt werden Teams, die sich bereits kennen.",
+        payHeading: "Vergütung",
+        payItems: [
+          {
+            value: "17 €",
+            label: "pro laufendem Meter für das gesamte Team",
+          },
+          {
+            value: "70–120 m",
+            label: "leisten Teams derzeit pro Tag (abhängig von der Trasse)",
+          },
+          {
+            value: "3.800–5.000 €",
+            label:
+              "geschätztes individuelles Monatseinkommen (Aufteilung nach Teamvereinbarung)",
+          },
+        ],
+        openHeading: "Teamzusammensetzung (7–8 Personen)",
+        roles: [
+          {
+            title: "1 Baggerfahrer",
+            location: "Stuttgart",
+            desc: "Aushub mit Minibagger auf der Glasfasertrasse.",
+          },
+          {
+            title: "1 Fahrer Klasse C",
+            location: "Stuttgart",
+            desc: "Transport und Logistik für Team und Ausrüstung.",
+          },
+          {
+            title: "3 Arbeiter für Pflaster / Platten",
+            location: "Stuttgart",
+            desc: "Entfernen und Wiederherstellen vorhandener Pflastersteine / Platten.",
+          },
+          {
+            title: "2–3 Hilfskräfte",
+            location: "Stuttgart",
+            desc: "Unterstützung des Teams an Trasse, Graben und bei der Fertigstellung.",
+          },
+        ],
+        tasksHeading: "Tätigkeitsbeschreibung",
+        tasks: [
+          "Entfernen vorhandener Pflastersteine / Platten.",
+          "Aushub mit Minibagger (ca. 45 cm breit, bis 60 cm tief).",
+          "Verlegen von Glasfaser-Mikrorohren (meist 1–3 Rohre).",
+          "Verfüllen des Grabens.",
+          "Wiederherstellung von Pflaster / Platten im Originalzustand.",
+        ],
+        offerHeading: "Was wir stellen",
+        offer: [
+          "Anmeldung und Vertrag über das kroatische Unternehmen.",
+          "Unterkunft.",
+          "Transport.",
+          "Alle Maschinen, Fahrzeuge und Werkzeuge für die Arbeit.",
+        ],
+        preference:
+          "Wir suchen eingespielte Teams, die sich bereits kennen.",
+        photoAlts: [
+          "Grabenaushub für Glasfaserinfrastruktur",
+          "Verlegen dünner Rohre für Glasfaser",
+          "Trassenvorbereitung für Mikrorohre",
+        ],
       },
       {
-        title: "Monteur für Glasfasernetze und Kabel",
-        desc: "Verlegen, Spleißen und Anschließen der optischen Infrastruktur.",
+        id: "construction",
+        title: "BARAKA GLOBAL SYSTEMS d.o.o. STELLT EIN",
+        positionsLabel: "Positionen",
+        positions: "Baggerfahrer • Bauarbeiter • Bauhilfskräfte",
+        locationLabel: "Standort",
+        location: "Mannheim und Dortmund, Deutschland",
+        startLabel: "Arbeitsbeginn",
+        start: "Nach Vereinbarung",
+        intro:
+          "Baraka Global Systems d.o.o. sucht Mitarbeiter für den Bau von Glasfaserinfrastruktur in Mannheim und Dortmund.",
+        openHeading: "Offene Arbeitsplätze",
+        roles: [
+          {
+            title: "Baggerfahrer für den Bau von Glasfaserinfrastruktur",
+            location: "Mannheim und Dortmund",
+            tasks: [
+              "Grabenaushub für die Verlegung von Glasfaserinfrastruktur.",
+              "Grabenbreite 45 cm, Tiefe bis 50 cm.",
+              "Bedienung von Minibaggern und anderer Baumaschinen.",
+              "Zusammenarbeit mit Monteuren und dem Bauteam.",
+              "Arbeit gemäß Projektdokumentation und Sicherheitsvorschriften.",
+            ],
+          },
+          {
+            title: "Bauarbeiter für Glasfaserprojekte",
+            location: "Mannheim und Dortmund",
+            tasks: [
+              "Entfernen von Betonplatten und Pflastersteinen.",
+              "Handaushub und Trassenvorbereitung.",
+              "Verlegen von Schutzrohren und Glasfaserkabeln.",
+              "Wiederherstellung von Betonplatten und Pflaster im Originalzustand.",
+              "Endgültige Oberflächenbearbeitung nach Abschluss der Arbeiten.",
+            ],
+          },
+          {
+            title: "Bauhilfskräfte für Betonplatten und Pflaster",
+            location: "Mannheim und Dortmund",
+            tasks: [
+              "Unterstützung beim Entfernen und Wiedereinbau von Betonplatten und Pflaster.",
+              "Vorbereitung der Baustelle und Arbeitsstrecke.",
+              "Unterstützung bei der Verlegung von Schutzrohren und Glasfaserinstallationen.",
+              "Erhalt von Ordnung und Sicherheit auf der Baustelle.",
+              "Weitere Hilfsarbeiten im Bau nach Anweisung des Bauleiters.",
+            ],
+          },
+        ],
+        expectHeading: "Was wir erwarten",
+        expect: [
+          "Erfahrung im Bau oder in der Infrastruktur ist von Vorteil.",
+          "Verantwortung, Selbstständigkeit und Teamarbeit.",
+          "Führerschein Klasse B ist von Vorteil.",
+          "Bereitschaft zur Arbeit in Deutschland.",
+        ],
+        offerHeading: "Was wir bieten",
+        offer: [
+          "Langfristige, sichere Beschäftigung.",
+          "Regelmäßige und attraktive Vergütung.",
+          "Organisierte Unterkunft.",
+          "Transport zur Baustelle.",
+          "Arbeitsausrüstung gestellt.",
+          "Möglichkeit zur Festanstellung und beruflichen Entwicklung.",
+        ],
       },
       {
-        title: "Hilfsarbeiter",
-        desc: "Kabelverlegung, Bau- und allgemeine Feldarbeiten im Team.",
+        id: "electrician",
+        title: "Industrieelektriker / Elektromonteure – Schweden / Deutschland",
+        positionsLabel: "Positionen",
+        positions: "Industrieelektriker / Elektromonteure",
+        locationLabel: "Standort",
+        location: "Schweden und Deutschland",
+        startLabel: "Arbeitsbeginn",
+        start: "Nach Vereinbarung",
+        intro:
+          "Baraka Global Systems d.o.o. stellt aufgrund neuer Projekte und der Geschäftserweiterung Industrieelektriker und Elektromonteure ein.",
+        openHeading: "Tätigkeitsbeschreibung",
+        roles: [
+          {
+            title: "Industrieelektriker / Elektromonteure",
+            location: "Schweden und Deutschland",
+            tasks: [
+              "Arbeit in der Automobilindustrie.",
+              "Industrielle Elektroinstallationen.",
+              "Montage und Anschluss von Schaltschränken.",
+              "Elektroinstallationen an Maschinen und Produktionslinien.",
+              "Verlegen und Anschließen von Energie- und Signalkabeln.",
+              "Montage von Kabeltrassen.",
+              "Arbeit nach Elektroschaltplänen und technischer Dokumentation.",
+              "Installation von Sensoren, Motoren und Industrieausrüstung.",
+              "Wartung industrieller Anlagen.",
+            ],
+          },
+        ],
+        expectHeading: "Was wir erwarten",
+        expect: [
+          "Erfahrung in industriellen Elektroinstallationen oder verwandten Tätigkeiten.",
+          "Verantwortung, Selbstständigkeit und Teamarbeit.",
+          "Bereitschaft zur Arbeit in Schweden und Deutschland.",
+        ],
+        offerHeading: "Was wir bieten",
+        offer: [
+          "Langfristige, sichere Beschäftigung.",
+          "Regelmäßige und wettbewerbsfähige Vergütung.",
+          "Organisierte und bezahlte Unterkunft.",
+          "Organisierten Transport.",
+          "Ordnungsgemäße Anmeldung und erforderliche Dokumentation.",
+          "Arbeit an seriösen Industrieprojekten.",
+          "Möglichkeit zur langfristigen Zusammenarbeit und Weiterentwicklung.",
+        ],
+        preference:
+          "Bevorzugt werden Kandidaten mit Erfahrung in der Automobilindustrie, in Industrieanlagen und an automatisierten Produktionslinien.",
       },
-    ],
-    tasksHeading: "Tätigkeitsbeschreibung",
-    tasks: [
-      "Mechanischer Aushub und Grabenvorbereitung für Telekommunikationsnetze.",
-      "Verlegen, Ziehen und Einblasen von Glasfaser- und Energiekabeln.",
-      "Spleißen, Anschließen und Montage fortschrittlicher optischer Infrastruktur.",
-      "Hilfsarbeiten im Bau, Erdarbeiten und allgemeine Feldarbeiten.",
-      "Wiederherstellung des Geländes nach Abschluss der Arbeiten.",
-      "Strikte Einhaltung von Arbeitsschutz und internen Qualitätsstandards.",
-    ],
-    expectHeading: "Was wir erwarten",
-    expect: [
-      "Erfahrung im Bau, bei Montage- oder ähnlichen Feldarbeiten ist erwünscht, aber keine Voraussetzung.",
-      "Hohes Maß an Verantwortung, Genauigkeit und Professionalität.",
-      "Bereitschaft zur Teamarbeit und zum Einsatz vor Ort in Deutschland.",
-      "Führerschein Klasse B ist von Vorteil, aber nicht zwingend.",
-      "Deutschkenntnisse sind von Vorteil; für die Bewerbung nicht erforderlich.",
-    ],
-    offerHeading: "Was wir bieten",
-    offer: [
-      "Langfristige, sichere Beschäftigung an stabilen Projekten in Deutschland.",
-      "Überdurchschnittliche, regelmäßige Vergütung je nach Erfahrung und Position.",
-      "Vollständig organisierte und bezahlte Unterkunft in der Nähe des Arbeitsplatzes.",
-      "Arbeitskleidung, Schutzausrüstung und moderne Maschinen.",
-      "Schneller, unkomplizierter Einstieg (administrative Unterstützung).",
-      "Professionelles, faires und unterstützendes Arbeitsumfeld.",
-      "Möglichkeit zur beruflichen Entwicklung durch langfristige Zusammenarbeit.",
     ],
     cta: "Für diese Stelle bewerben",
+    tagline: "Wir bauen eine vernetzte Zukunft!",
     imageAlt:
-      "Baraka Global Systems — Arbeit vor Ort, Glasfasermontage, Team bei einem Projekt in Deutschland",
+      "Baraka Global Systems — Arbeit vor Ort, Glasfaserinfrastruktur, Team bei einem Projekt in Deutschland",
   },
   apply: {
     heading: "Bewerbung",
@@ -621,9 +1105,13 @@ const de: Messages = {
     position: "Position",
     positionPlaceholder: "Position wählen",
     positions: {
-      excavator: "Baggerfahrer / Maschinenführer",
-      fiber: "Glasfasernetz-Monteur",
-      helper: "Hilfsarbeiter",
+      team: "Eingespieltes Team (Stuttgart)",
+      excavator: "Baggerfahrer",
+      driverC: "Fahrer Klasse C",
+      paving: "Arbeiter für Pflaster / Platten",
+      construction: "Bauarbeiter",
+      helper: "Bauhilfskraft",
+      electrician: "Industrieelektriker / Elektromonteur",
     },
     note: "Kurze Notiz (optional)",
     notePlaceholder: "Erfahrung, Verfügbarkeit, weitere Infos…",

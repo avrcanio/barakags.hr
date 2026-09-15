@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BARAKA GLOBAL SYSTEMS — barakags.hr",
+  title: "BARAKA GLOBAL SYSTEMS — Gotove ekipe, Stuttgart",
   description:
-    "Hrvatska tvrtka za optičku infrastrukturu. Tražimo radnike za projekte u Njemačkoj.",
+    "Tražimo gotove ekipe za optičku infrastrukturu u Stuttgartu. Mannheim, Dortmund i industrijski električari — Baraka Global Systems.",
 };
 
 export default function RootLayout({
