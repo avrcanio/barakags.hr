@@ -21,11 +21,12 @@ export function Hero({ t, locale }: Props) {
         <p className="heroCompany">{t.company}</p>
         <h1 className="heroTitle">{t.hero.title}</h1>
         <p className="heroSubtitle">{t.hero.subtitle}</p>
+        <p className="heroHighlight">{t.hero.highlight}</p>
         <div className="heroCtas">
           <a href={`/${locale}#apply`} className="btn btnPrimary">
             {t.hero.ctaApply}
           </a>
-          <a href={`/${locale}#job`} className="btn btnOutline">
+          <a href={`/${locale}#job-stuttgart`} className="btn btnOutline">
             {t.hero.ctaLearn}
           </a>
         </div>

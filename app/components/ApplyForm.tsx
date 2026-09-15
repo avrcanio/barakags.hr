@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import type { Locale, Messages, JobPosition } from "@/lib/i18n";
+import { JOB_POSITIONS, type Locale, type Messages } from "@/lib/i18n";
+import { PHONES } from "@/lib/site";
 
 type Props = {
   locale: Locale;
   t: Messages;
 };
 
-const positions: JobPosition[] = ["excavator", "fiber", "helper"];
+const positions = JOB_POSITIONS;
 
 export function ApplyForm({ locale, t }: Props) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
@@ -59,9 +60,11 @@ export function ApplyForm({ locale, t }: Props) {
             <h2 className="sectionTitle">{t.apply.heading}</h2>
             <p className="applyIntro">{t.apply.subheading}</p>
             <div className="applyAlt" style={{ marginTop: "1.5rem" }}>
-              <a href={`tel:${t.phone}`} className="btn btnOutline">
-                {t.apply.call}: {t.phoneDisplay}
-              </a>
+              {PHONES.map((p) => (
+                <a key={p.tel} href={`tel:${p.tel}`} className="btn btnOutline">
+                  {t.apply.call}: {p.display}
+                </a>
+              ))}
               <a href={`mailto:${t.email}`} className="btn btnOutline">
                 {t.apply.write}
               </a>
